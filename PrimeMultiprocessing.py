@@ -27,7 +27,7 @@ def work(chunk: list) -> list:
     return to_return
 
 @jit
-def num_range():
+def num_range(chunk_size: int = 1000000):
     last = 6
     while True:
         # Find the starting points for `6n - 1` and `6n + 1`
@@ -51,16 +51,13 @@ def num_range():
         yield result
 
 
-if __name__ == '__main__':
+def main():
     calcTo: int = int(input("Calculate the nth prime:"))
     time1 = perf_counter()
 
     max_processes = multiprocessing.cpu_count()
-    chunk_size = 100000
-    processes = []
     nums_found = 3
     chunks = num_range()
-    current_chunks = []
 
     with multiprocessing.Pool(max_processes) as pool:
         while True:
@@ -70,5 +67,8 @@ if __name__ == '__main__':
             else:
                 current_chunks.sort()
                 time2 = perf_counter()
-                print(f'Your #: {current_chunks[calcTo-nums_found-1]}\nTime: {time2 - time1}sec')
+                print(f'Your #: {current_chunks[calcTo - nums_found - 1]}\nTime: {time2 - time1}sec')
                 break
+
+if __name__ == '__main__':
+    main()
